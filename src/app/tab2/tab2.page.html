@@ -1,9 +1,20 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab Two
+      Add New Task
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+
+    <ion-item>
+      <ion-label position="stacked">Task Name</ion-label>
+      <ion-input placeholder="Enter Task Name"></ion-input>
+    </ion-item>
+
+    <br>
+
+    <ion-button expand="full" (click)="addListItem(input)">Add</ion-button>  
+
+</ion-content>
