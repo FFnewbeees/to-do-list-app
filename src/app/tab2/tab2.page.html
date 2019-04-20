@@ -15,6 +15,6 @@
 
     <br>
 
-    <ion-button expand="full" (click)="addListItem(input)">Add</ion-button>  
+    <ion-button expand="full" (click)="addListItem(input)" [disabled]="!input">Add</ion-button>  
 
 </ion-content>

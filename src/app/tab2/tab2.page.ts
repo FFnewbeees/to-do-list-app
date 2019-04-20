@@ -54,4 +54,14 @@ export class Tab2Page implements OnInit {
     });
     this.saveList();
   }
+
+  changeItemStatus(id:number){
+    this.listItems.forEach( (item) => {
+      if( item.id == id){
+        item.status = ( item.status == false )? true : false;
+        
+      }
+    } );
+    this.saveList();
+  }
 }

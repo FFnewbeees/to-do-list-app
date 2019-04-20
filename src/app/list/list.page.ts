@@ -9,6 +9,7 @@ import { Item } from '../../models/item.model';
 })
 export class ListPage implements OnInit {
   listItems: Array<Item> =[];
+  input:string;
 
   constructor(private storage:StorageService) { }
 
@@ -25,5 +26,59 @@ export class ListPage implements OnInit {
     .catch( (error) => console.log(error) );
   }
   
+  addListItem( taskName:string){
+    this.input ='';
+    let item = {taskName: taskName, id: new Date().getTime(), status: false};
+    this.listItems.push( item );
+    this.saveList();
+
+  }
+
+  saveList(){
+    this.storage.saveData('list', this.listItems)
+    .then((response) =>{
+      //data written successfully
+      console.log(this.listItems);
+      
+    })
+    .catch((error) =>{
+      console.log(error);
+    })
+  }
+  
+  deleteItem(id:number){
+    this.listItems.forEach( (Item, index ) => {
+      if( Item.id == id ){
+        this.listItems.splice( index, 1 );
+      }
+    });
+    this.saveList();
+  }
+
+  changeItemStatus(id:number){
+    this.listItems.forEach( (item) => {
+      if( item.id == id){
+        item.status = ( item.status == false )? true : false;
+        
+      }
+    } );
+    this.saveList();
+  }
+
+  taskRemaining():number{
+    return this.listItems.filter(item => !item.status).length;
+  }
+
+  atLeastOneTaskCompleted():boolean{
+    return this.listItems.filter(item => item.status).length > 0;
+  }
+
+  clearCompletedTask(){
+    this.listItems = this.listItems.filter(item => !item.status);
+  }
+
+  // checkAllTasks(){
+  //   this.listItems.forEach(item => item.status = (<HTMLInputElement>event.target).checked);
+  // }
 
 }
