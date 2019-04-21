@@ -9,6 +9,7 @@ import { Item } from '../../models/item.model';
 })
 export class ListPage implements OnInit {
   listItems: Array<Item> =[];
+  listDeletedItems: Array<Item> =[];
   input:string;
 
   constructor(private storage:StorageService) { }
@@ -46,7 +47,8 @@ export class ListPage implements OnInit {
     })
   }
   
-  deleteItem(id:number){
+  deleteItem(id:number, taskName:string){
+    this.saveDeleteItem(id,taskName);
     this.listItems.forEach( (Item, index ) => {
       if( Item.id == id ){
         this.listItems.splice( index, 1 );
@@ -69,16 +71,41 @@ export class ListPage implements OnInit {
     return this.listItems.filter(item => !item.status).length;
   }
 
-  atLeastOneTaskCompleted():boolean{
-    return this.listItems.filter(item => item.status).length > 0;
-  }
-
-  clearCompletedTask(){
-    this.listItems = this.listItems.filter(item => !item.status);
-  }
-
-  // checkAllTasks(){
-  //   this.listItems.forEach(item => item.status = (<HTMLInputElement>event.target).checked);
+  // atLeastOneTaskCompleted():boolean{
+  //   return this.listItems.filter(item => item.status).length > 0;
   // }
 
+  // clearCompletedTask(id:number){
+  //   this.saveDeleteItem(id;)
+  //   this.listItems = this.listItems.filter(item => !item.status);
+  //   this.saveList();
+  // }
+
+  saveDeleteItem(id:number, taskName:string){
+    let deleteItem = {taskName: taskName, id:id, status: true };
+    this.listDeletedItems.push(deleteItem);
+    this.saveDeleteList();
+  }
+
+  // saveDeleteItem(id:number){
+  //   this.listItems.forEach((Item) => {
+  //     if(Item.id = id){
+  //       let deleteItem = {taskName:Item.taskName, id:Item.id, status:true};
+  //       this.listDeletedItems.push(deleteItem);
+  //     }
+  //   });
+  //   this.saveDeleteList();
+  // }
+
+  saveDeleteList(){
+    this.storage.saveData('deleteList', this.listDeletedItems)
+    .then((response) =>{
+      //data written successfully
+      console.log(this.listDeletedItems);
+      
+    })
+    .catch((error) =>{
+      console.log(error);
+    })
+  }
 }

@@ -21,7 +21,7 @@
       </ion-buttons>
     <ion-label>{{item.taskName}}</ion-label>
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)= "deleteItem(item.id)" *ngIf = "item.status">
+      <ion-button fill="clear" (click)= "deleteItem(item.id, item.taskName)" *ngIf = "item.status">
         <ion-icon name="close"></ion-icon>
       </ion-button>
    </ion-buttons>
@@ -36,11 +36,11 @@
 
   <!-- <ion-button size="small" color="danger" (click)= "clearCompletedTask()" *ngIf = "atLeastOneTaskCompleted()">Clear Completed</ion-button> -->
  
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" color="danger">
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" color="danger">
       <ion-fab-button (click)= "clearCompletedTask()" *ngIf = "atLeastOneTaskCompleted()"> 
         <ion-icon name="trash"></ion-icon>
       </ion-fab-button>
-    </ion-fab>
+    </ion-fab> -->
 
 
 </ion-content>

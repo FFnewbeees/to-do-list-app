@@ -8,26 +8,25 @@ import { StorageService } from '../storage.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
-  input:string;
   listItems: Array<Item> =[];
 
   constructor(private storage:StorageService) { }
 
   ngOnInit (){
+    this.ionViewDidEnter();
   }
 
-  // ionViewDidEnter(){
-  //   this.storage.readData('list')
-  //   .then( (response:any) => {
-  //     if( response ){
-  //       this.listItems = JSON.parse(response);
-  //     }
-  //   })
-  //   .catch( (error) => console.log(error) );
-  // }
+  ionViewDidEnter(){
+    this.storage.readData('deleteList')
+    .then( (response:any) => {
+      if( response ){
+        this.listItems = JSON.parse(response);
+      }
+    })
+    .catch( (error) => console.log(error) );
+  }
 
   addListItem( taskName:string){
-    this.input ='';
     let item = {taskName: taskName, id: new Date().getTime(), status: false};
     this.listItems.push( item );
     this.saveList();

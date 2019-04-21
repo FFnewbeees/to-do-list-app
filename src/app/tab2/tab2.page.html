@@ -1,20 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Add New Task
+      History
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-    <ion-item>
-      <ion-label position="stacked">Task Name</ion-label>
-      <ion-input placeholder="Enter Task Name"[(ngModel)]= "input"></ion-input>
-    </ion-item>
-
-    <br>
-
-    <ion-button expand="full" (click)="addListItem(input)" [disabled]="!input">Add</ion-button>  
+    <ion-list>
+        <ion-item *ngFor="let item of listItems">
+          <ion-label>{{item.taskName}}</ion-label>
+        </ion-item>
+      </ion-list>
 
 </ion-content>
