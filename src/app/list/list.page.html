@@ -11,7 +11,14 @@
     <ion-input placeholder="Enter Task Name"[(ngModel)]= "input"></ion-input>
   </ion-item>
   <br>
-  <ion-button expand="full" (click)="addListItem(input)" [disabled]="!input">Add</ion-button>  
+
+  <ion-item>
+    <ion-label position="stacked">Due Date</ion-label>
+    <ion-datetime placeholder="Click to Select Date" picker-format="YYYY-MM-DD" display-format="YYYY-MM-DD" min="2019" max="2050" [(ngModel)]= "dateInput"></ion-datetime>
+  </ion-item>
+  <br>
+
+  <ion-button expand="full" (click)="addListItem(input,dateInput)" [disabled]="!input">Add</ion-button>  
 
   <br>
   <ion-list>
@@ -20,12 +27,16 @@
         <ion-checkbox color="secondary" [checked]="item.status" (ionChange)="changeItemStatus(item.id)"></ion-checkbox>
       </ion-buttons>
     <ion-label>{{item.taskName}}</ion-label>
+    <ion-label>{{item.dueDate}}</ion-label>
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)= "deleteItem(item.id, item.taskName)" *ngIf = "item.status">
         <ion-icon name="close"></ion-icon>
       </ion-button>
    </ion-buttons>
   </ion-item>
+
+
+
   </ion-list>
 
 

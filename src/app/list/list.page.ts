@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../storage.service';
 import { Item } from '../../models/item.model';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-list',
@@ -11,10 +12,13 @@ export class ListPage implements OnInit {
   listItems: Array<Item> =[];
   listDeletedItems: Array<Item> =[];
   input:string;
+  dateInput:string;
+  today:string;
 
   constructor(private storage:StorageService) { }
 
   ngOnInit() {
+    this.ionViewDidEnter();
   }
 
   ionViewDidEnter(){
@@ -27,9 +31,10 @@ export class ListPage implements OnInit {
     .catch( (error) => console.log(error) );
   }
   
-  addListItem( taskName:string){
+  addListItem( taskName:string, dateInput:string ){
     this.input ='';
-    let item = {taskName: taskName, id: new Date().getTime(), status: false};
+    this.dateInput="";
+    let item = {taskName: taskName, id: new Date().getTime(), status: false, dueDate: dateInput.slice(0,10) };
     this.listItems.push( item );
     this.saveList();
 
@@ -82,7 +87,8 @@ export class ListPage implements OnInit {
   // }
 
   saveDeleteItem(id:number, taskName:string){
-    let deleteItem = {taskName: taskName, id:id, status: true };
+
+    let deleteItem = {taskName: taskName, id:id, status: true, dueDate: this.getFinishDate() };
     this.listDeletedItems.push(deleteItem);
     this.saveDeleteList();
   }
@@ -108,4 +114,14 @@ export class ListPage implements OnInit {
       console.log(error);
     })
   }
+
+  getFinishDate(){
+    var temp = new Date();
+    var dd = String(temp.getDate()).padStart(2, '0');
+    var mm = String(temp.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = temp.getFullYear();
+
+    return this.today = yyyy + '/' + mm + '/' + dd;
+  }
+
 }
