@@ -16,8 +16,6 @@
     <ion-label position="stacked">Due Date</ion-label>
     <ion-datetime placeholder="Click to Select Date" picker-format="YYYY-MM-DD" display-format="YYYY-MM-DD" min="2019" max="2050" [(ngModel)]= "dateInput"></ion-datetime>
   </ion-item>
-  <br>
-
   <ion-button expand="full" (click)="addListItem(input,dateInput)" [disabled]="!input">Add</ion-button>  
 
   <br>
@@ -26,32 +24,23 @@
       <ion-buttons slot="start">
         <ion-checkbox color="secondary" [checked]="item.status" (ionChange)="changeItemStatus(item.id)"></ion-checkbox>
       </ion-buttons>
-    <ion-label>{{item.taskName}}</ion-label>
-    <ion-label>{{item.dueDate}}</ion-label>
+    <ion-label>{{item.taskName}}
+      <p>{{item.dueDate}}</p>
+    </ion-label>
+    
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)= "deleteItem(item.id, item.taskName)" *ngIf = "item.status">
+      <ion-button fill="clear" (click)="openReminderDialog(item.taskName)" color="danger" id="reminderBtn">
+        <ion-icon name="alarm"></ion-icon>
+      </ion-button>
+     <ion-button fill="clear" (click)= "deleteItem(item.id, item.taskName)" *ngIf = "item.status">
         <ion-icon name="close"></ion-icon>
       </ion-button>
    </ion-buttons>
   </ion-item>
+</ion-list>
 
-
-
-  </ion-list>
-
-
-  <ion-item> 
-    <!--<ion-label><ion-checkbox  (ionChange)="checkAllTasks()"></ion-checkbox>Check All</ion-label> -->
+  <ion-item color="secondary"> 
     <ion-label class="alignRight">{{taskRemaining()}} tasks left</ion-label>
   </ion-item>
-
-  <!-- <ion-button size="small" color="danger" (click)= "clearCompletedTask()" *ngIf = "atLeastOneTaskCompleted()">Clear Completed</ion-button> -->
- 
-  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" color="danger">
-      <ion-fab-button (click)= "clearCompletedTask()" *ngIf = "atLeastOneTaskCompleted()"> 
-        <ion-icon name="trash"></ion-icon>
-      </ion-fab-button>
-    </ion-fab> -->
-
 
 </ion-content>

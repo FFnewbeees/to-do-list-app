@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../storage.service';
 import { Item } from '../../models/item.model';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { AlertController} from '@ionic/angular';
+
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-list',
@@ -15,10 +17,14 @@ export class ListPage implements OnInit {
   dateInput:string;
   today:string;
 
-  constructor(private storage:StorageService) { }
+  constructor(
+    private storage:StorageService, 
+    private alertController:AlertController,
+    private localNotifications:LocalNotifications ) { }
 
   ngOnInit() {
     this.ionViewDidEnter();
+ 
   }
 
   ionViewDidEnter(){
@@ -76,32 +82,12 @@ export class ListPage implements OnInit {
     return this.listItems.filter(item => !item.status).length;
   }
 
-  // atLeastOneTaskCompleted():boolean{
-  //   return this.listItems.filter(item => item.status).length > 0;
-  // }
-
-  // clearCompletedTask(id:number){
-  //   this.saveDeleteItem(id;)
-  //   this.listItems = this.listItems.filter(item => !item.status);
-  //   this.saveList();
-  // }
-
   saveDeleteItem(id:number, taskName:string){
 
     let deleteItem = {taskName: taskName, id:id, status: true, dueDate: this.getFinishDate() };
     this.listDeletedItems.push(deleteItem);
     this.saveDeleteList();
   }
-
-  // saveDeleteItem(id:number){
-  //   this.listItems.forEach((Item) => {
-  //     if(Item.id = id){
-  //       let deleteItem = {taskName:Item.taskName, id:Item.id, status:true};
-  //       this.listDeletedItems.push(deleteItem);
-  //     }
-  //   });
-  //   this.saveDeleteList();
-  // }
 
   saveDeleteList(){
     this.storage.saveData('deleteList', this.listDeletedItems)
@@ -124,4 +110,37 @@ export class ListPage implements OnInit {
     return this.today = yyyy + '/' + mm + '/' + dd;
   }
 
+  async openReminderDialog(text:string){
+    const alert = await this.alertController.create({
+      header:'Reminder',
+      subHeader: 'Snooze',
+      message: 'You will be reminded in 60 minutes',
+      buttons:[
+        {
+          text:'Cancel',
+          handler:(event) => {
+            //cancel the reminder
+          }
+        },
+        {
+          text:'Confirm',
+          role:'cancel',
+          handler:(event) => {
+          this.scheduleReminder(5000,text)
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  scheduleReminder( time:number, text:string ){
+    this.localNotifications.schedule({
+      text:`A Reminder to ${text}`,
+      trigger: {at: new Date(new Date().getTime() + time)},
+      led:'000000',
+      sound:null
+    });
+  }
+  
 }

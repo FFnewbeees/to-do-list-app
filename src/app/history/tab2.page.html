@@ -9,14 +9,16 @@
 <ion-content>
 
     <ion-list>
-        <ion-row>
+        <ion-toolbar color="primary">
+          <ion-row>
             <ion-col>
-                Task Name 
+            Task Name 
             </ion-col>
             <ion-col>
-                Finish Date
+            Finish Date
             </ion-col>
           </ion-row>
+        </ion-toolbar>
         <ion-item *ngFor="let item of listItems">
           <ion-label>{{item.taskName}}</ion-label>
           <ion-label>{{item.dueDate}}</ion-label>
